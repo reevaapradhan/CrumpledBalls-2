@@ -4,9 +4,12 @@ const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Body = Matter.Body;
 const Render = Matter.Render;
+const Constraint = Matter.Constraint;
+
 var dustbin1, dustbin2, dustbin3;
 var paper;
 var ground;
+var launcherString;
 
 function preload(){
 	dustbinIMG = loadImage("dustbin.png");
@@ -28,6 +31,9 @@ function setup() {
 	paper = new Paper();
 
 	ground = new Ground();
+
+	launcherString = new Launcher(paper.body,{x:100,y:100});
+
 	//packageBody = Bodies.circle(width/2 , 200 , 5 , {restitution:1.5, isStatic:false});
 	//World.add(world, packageBody);
 	
@@ -49,14 +55,17 @@ function draw() {
   dustbin2.display();
   dustbin3.display();
   paper.display();
+  launcherString.display();
   drawSprites();
 }
 
-function keyPressed(){
-	if(keyCode === UP_ARROW){
-		Matter.Body.applyForce(paper.body,paper.body.position,{x:800, y:-800});
-		//console.log("inside up arrow");
-	}
+function mouseDragged(){
+    Matter.Body.setPosition(paper.body, {x: mouseX , y: mouseY});
+}
+
+
+function mouseReleased(){
+    launcherString.fly();
 }
 
 
